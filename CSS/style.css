@@ -25,7 +25,10 @@
     margin-bottom: 10px;
 }
 #list-student{
-    width: 95%;
+    width: 1000px;
+}
+table{
+    width: 100%;
 }
 #col-1{
     width: 80%;
@@ -43,5 +46,6 @@
 }
 table td,th{
     text-align: center;
-    padding: 0 20px 0 20px;
+    font-size: 14px;
+    padding: 10px 20px 10px 20px;
 }

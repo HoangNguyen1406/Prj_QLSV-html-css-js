@@ -1,6 +1,9 @@
-const btnAdd = document.querySelector('#btnAdd');
+
+/** @type {HTMLFormElement} */
+const form = document.querySelector('#form');
 const table = document.querySelector('#tableList').querySelector('tbody');
 
+// xử lý thêm dữ HS
 var add = ()=>{
     this.MaSV = document.querySelector('#MaSV');
     this.TenSV = document.querySelector('#TenSV');
@@ -14,7 +17,8 @@ var add = ()=>{
     let ly = parseFloat(Ly.value) || 0;
     let hoa = parseFloat(Hoa.value) || 0;
 
-    let diemTB = (toan+ly+hoa)/3
+    let diemTB = ((toan+ly+hoa)/3).toFixed(1);
+    let diem = parseFloat(diemTB);
 
     if(diemTB < 4)
         var mss = "Yếu";
@@ -38,6 +42,7 @@ var add = ()=>{
     const cell10 = row.insertCell(9);
 
     const input = document.createElement('input');
+    input.className = 'checkbox';
     input.type = 'checkbox';
 
     cell1.appendChild(input);
@@ -48,8 +53,61 @@ var add = ()=>{
     cell6.append(toan);
     cell7.append(ly);
     cell8.append(hoa);
-    cell9.append(diemTB);
+    cell9.append(diem);
     cell10.append(mss);
 }
 
-btnAdd.addEventListener('click',add);
+// xử lý sửa
+var update = ()=>{
+    const selected = document.querySelectorAll(".checkbox");
+
+    selected.forEach((sl,index) =>{
+        if(sl.checked){
+            const td = sl.parentElement.parentElement.querySelectorAll('td');
+            for(let i=1;i<td.length-2;i++){
+                const input = document.createElement("input");
+                input.type="text";
+                input.style.width="60px";
+                input.value=td[i].innerText;
+                td[i].innerText = '';
+                td[i].appendChild(input);
+            }
+        }
+    });
+}
+
+// xử lý checkbox và xoá
+var checkbox = ()=>{
+    const selected = document.querySelectorAll(".checkbox");
+
+    selected.forEach(sl =>{
+        if(sl.checked)
+            sl.parentElement.parentElement.remove();
+    });
+}
+
+// add action to button
+// check box
+
+// thêm
+form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+
+    if(!form.checkValidity()){
+        return;
+    }
+
+    add();
+    form.reset();
+});
+
+// xoá
+document.querySelector('#delete').addEventListener('click',()=>{
+    checkbox();
+});
+
+// sửa
+document.querySelector('#update').addEventListener('click',()=>{
+    console.log('test');
+    update();
+});

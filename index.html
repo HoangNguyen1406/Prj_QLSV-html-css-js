@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="contain">
-        <div id="form">
+        <form id="form">
             <h3 id="title-input">Thông tin Sinh Viên</h3>
             <div class="input">
                 <label for="MaSV">Mã sinh viên: </label>
@@ -39,17 +39,17 @@
                 <input required type="number" name="Chemistry" id="Chemistry" placeholder="VD:10.0" value="">
             </div>
             <div class="action">
-                <button id="btnAdd">Thêm</button>
+                <input type="submit" id="btnAdd" value="Thêm"/>
             </div>
-        </div>
+        </form>
         <div id="list">
             <div id="function-app">
                 <div id="col-1">
                     <button>Dữ liệu giả</button>
                 </div>
                 <div id="col-2">
-                    <button>Sửa</button>
-                    <button>Xoá</button>
+                    <button id="update">Sửa</button>
+                    <button id="delete">Xoá</button>
                 </div>
             </div>
             <div id="list-student">
@@ -69,7 +69,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td><input type="checkbox"></td>
+                        <td><input type="checkbox" class="checkbox"></td>
                         <td>SV001</td>
                         <td>Nguyễn Văn A</td>
                         <td>a@example.com</td>
