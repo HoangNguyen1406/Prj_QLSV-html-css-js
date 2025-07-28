@@ -3,19 +3,38 @@
 const form = document.querySelector('#form');
 const table = document.querySelector('#tableList').querySelector('tbody');
 
+// --
+
+var btnSave = ()=>{
+    document.querySelector('#update').style.display='none';
+    document.querySelector('#delete').style.display='none';
+
+    document.querySelector('#save').style.display='block';
+    document.querySelector('#cancel').style.display='block';
+}
+
+var btnCancel = ()=>{
+    document.querySelector('#update').style.display='block';
+    document.querySelector('#delete').style.display='block';
+
+    document.querySelector('#save').style.display='none';
+    document.querySelector('#cancel').style.display='none';
+}
+
+// --
 // xử lý thêm dữ HS
 var add = ()=>{
-    this.MaSV = document.querySelector('#MaSV');
-    this.TenSV = document.querySelector('#TenSV');
-    this.Email = document.querySelector('#Email');
-    this.SDT = document.querySelector('#Number');
-    this.Toan = document.querySelector('#Math');
-    this.Ly = document.querySelector('#Physic');
-    this.Hoa = document.querySelector('#Chemistry');
+    constMaSV = document.querySelector('#MaSV');
+    const TenSV = document.querySelector('#TenSV');
+    const Email = document.querySelector('#Email');
+    const SDT = document.querySelector('#Number');
+    const Toan = document.querySelector('#Math');
+    const Ly = document.querySelector('#Physic');
+    const Hoa = document.querySelector('#Chemistry');
 
-    let toan = parseFloat(Toan.value) || 0;
-    let ly = parseFloat(Ly.value) || 0;
-    let hoa = parseFloat(Hoa.value) || 0;
+    let toan = parseFloat(Toan.value) || 0.0;
+    let ly = parseFloat(Ly.value) || 0.0;
+    let hoa = parseFloat(Hoa.value) || 0.0;
 
     let diemTB = ((toan+ly+hoa)/3).toFixed(1);
     let diem = parseFloat(diemTB);
@@ -57,7 +76,8 @@ var add = ()=>{
     cell10.append(mss);
 }
 
-// xử lý sửa
+var Values = [];
+// xử lý sửa chuyển dữ liệu sang text
 var update = ()=>{
     const selected = document.querySelectorAll(".checkbox");
 
@@ -65,6 +85,7 @@ var update = ()=>{
         if(sl.checked){
             const td = sl.parentElement.parentElement.querySelectorAll('td');
             for(let i=1;i<td.length-2;i++){
+                Values[i - 1] = td[i].innerText;
                 const input = document.createElement("input");
                 input.type="text";
                 input.style.width="60px";
@@ -84,11 +105,55 @@ var checkbox = ()=>{
         if(sl.checked)
             sl.parentElement.parentElement.remove();
     });
+};
+
+//lưu
+var save = () => {
+    document.querySelectorAll(".checkbox").forEach(sl => {
+        if (sl.checked) {
+            const td = sl.parentElement.parentElement.querySelectorAll('td');
+
+            var toanInput = td[5].querySelector('input');
+            const lyInput = td[6].querySelector('input');
+            const hoaInput = td[7].querySelector('input');
+
+            if (!toanInput || !lyInput || !hoaInput) return;
+
+            const toan = parseFloat(toanInput.value) || 0;
+            const ly = parseFloat(lyInput.value) || 0;
+            const hoa = parseFloat(hoaInput.value) || 0;
+
+            const diemTB = ((toan + ly + hoa) / 3).toFixed(1);
+            const diem = parseFloat(diemTB);
+
+            let mss = "";
+            if (diem < 4) mss = "Yếu";
+            else if (diem < 7) mss = "Trung bình";
+            else if (diem < 8) mss = "Khá";
+            else mss = "Giỏi";
+
+            td[8].innerText = diemTB;
+            td[9].innerText = mss;
+
+            [5, 6, 7].forEach(i => {
+                td[i].innerText = td[i].querySelector('input').value;
+            });
+        }
+    });
+};
+// huỷ
+function cancel(){
+    document.querySelectorAll(".checkbox").forEach(sl => {
+        if (sl.checked) {
+            const td = sl.parentElement.parentElement.querySelectorAll('td');
+            for(let i =1; i < td.length ; i++){
+                td[i].innerText = Values[i-1];
+            }
+        }
+    });
 }
 
 // add action to button
-// check box
-
 // thêm
 form.addEventListener('submit',(e)=>{
     e.preventDefault();
@@ -108,6 +173,22 @@ document.querySelector('#delete').addEventListener('click',()=>{
 
 // sửa
 document.querySelector('#update').addEventListener('click',()=>{
-    console.log('test');
-    update();
+    document.querySelectorAll(".checkbox").forEach(sl=>{
+        if(sl.checked){
+            update();
+            btnSave();
+        }
+    });
 });
+
+//lưu
+document.querySelector('#save').addEventListener('click',()=>{
+    save();
+    btnSave();
+})
+
+// huỷ
+document.querySelector('#cancel').addEventListener('click',()=>{
+    cancel();
+    btnCancel();
+})
