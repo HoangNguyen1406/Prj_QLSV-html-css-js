@@ -4,7 +4,6 @@ const form = document.querySelector('#form');
 const table = document.querySelector('#tableList').querySelector('tbody');
 
 // --
-
 var btnSave = ()=>{
     document.querySelector('#update').style.display='none';
     document.querySelector('#delete').style.display='none';
@@ -24,7 +23,7 @@ var btnCancel = ()=>{
 // --
 // xử lý thêm dữ HS
 var add = ()=>{
-    constMaSV = document.querySelector('#MaSV');
+    const MaSV = document.querySelector('#MaSV');
     const TenSV = document.querySelector('#TenSV');
     const Email = document.querySelector('#Email');
     const SDT = document.querySelector('#Number');
@@ -76,11 +75,10 @@ var add = ()=>{
     cell10.append(mss);
 }
 
-var Values = [];
 // xử lý sửa chuyển dữ liệu sang text
+var Values = [];
 var update = ()=>{
     const selected = document.querySelectorAll(".checkbox");
-
     selected.forEach((sl,index) =>{
         if(sl.checked){
             const td = sl.parentElement.parentElement.querySelectorAll('td');
@@ -98,7 +96,7 @@ var update = ()=>{
 }
 
 // xử lý checkbox và xoá
-var checkbox = ()=>{
+var delete_fnc = ()=>{
     const selected = document.querySelectorAll(".checkbox");
 
     selected.forEach(sl =>{
@@ -112,8 +110,16 @@ var save = () => {
     document.querySelectorAll(".checkbox").forEach(sl => {
         if (sl.checked) {
             const td = sl.parentElement.parentElement.querySelectorAll('td');
+            const checkbox = document.createElement('input');
+            checkbox.type = "checkbox";
+            checkbox.className= "checkbox";
+            td[0].appendChild(checkbox);
+            td[1].innerText = td[1].querySelector('input').value;
+            td[2].innerText = td[2].querySelector('input').value;
+            td[3].innerText = td[3].querySelector('input').value;
+            td[4].innerText = td[4].querySelector('input').value;
 
-            var toanInput = td[5].querySelector('input');
+            const toanInput = td[5].querySelector('input');
             const lyInput = td[6].querySelector('input');
             const hoaInput = td[7].querySelector('input');
 
@@ -124,13 +130,8 @@ var save = () => {
             const hoa = parseFloat(hoaInput.value) || 0;
 
             const diemTB = ((toan + ly + hoa) / 3).toFixed(1);
-            const diem = parseFloat(diemTB);
 
-            let mss = "";
-            if (diem < 4) mss = "Yếu";
-            else if (diem < 7) mss = "Trung bình";
-            else if (diem < 8) mss = "Khá";
-            else mss = "Giỏi";
+            let mss = diemTB < 4 ? "Yếu" : diemTB < 7 ? "Trung bình" : diemTB < 9 ? "Khá" : "Giỏi";
 
             td[8].innerText = diemTB;
             td[9].innerText = mss;
@@ -138,17 +139,37 @@ var save = () => {
             [5, 6, 7].forEach(i => {
                 td[i].innerText = td[i].querySelector('input').value;
             });
+            td.forEach(par =>{
+                const input = par.querySelector('input');
+                if(input)
+                    par.querySelector("input").remove();
+            })
         }
     });
 };
 // huỷ
-function cancel(){
+function cancel() {
     document.querySelectorAll(".checkbox").forEach(sl => {
         if (sl.checked) {
             const td = sl.parentElement.parentElement.querySelectorAll('td');
-            for(let i =1; i < td.length ; i++){
-                td[i].innerText = Values[i-1];
+
+            // Khôi phục dữ liệu ban đầu
+            for (let i = 1; i <= 7; i++) {
+                const input = td[i].querySelector('input');
+                if (input) input.remove();
+                td[i].innerText = Values[i - 1]; // Gán lại giá trị cũ
             }
+
+            // Khôi phục điểm trung bình và xếp loại
+            const toan = parseFloat(Values[4]) || 0;
+            const ly = parseFloat(Values[5]) || 0;
+            const hoa = parseFloat(Values[6]) || 0;
+            const diemTB = ((toan + ly + hoa) / 3).toFixed(1);
+
+            let mss = diemTB < 4 ? "Yếu" : diemTB < 7 ? "Trung bình" : diemTB < 9 ? "Khá" : "Giỏi";
+
+            td[8].innerText = diemTB;
+            td[9].innerText = mss;
         }
     });
 }
@@ -168,7 +189,9 @@ form.addEventListener('submit',(e)=>{
 
 // xoá
 document.querySelector('#delete').addEventListener('click',()=>{
-    checkbox();
+    const pop = window.confirm('bạn có chắc chắn xoá dữ liệu ?')
+    if(pop)
+        delete_fnc();
 });
 
 // sửa
@@ -183,8 +206,10 @@ document.querySelector('#update').addEventListener('click',()=>{
 
 //lưu
 document.querySelector('#save').addEventListener('click',()=>{
-    save();
-    btnSave();
+    const pop = window.confirm('bạn có chắc chắn lưu dữ liệu ?')
+    if(pop)
+        save();
+    btnCancel();
 })
 
 // huỷ

@@ -1,51 +1,181 @@
-*{
-    padding: 0px;
-    margin: 0px;
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
-/* layouts website */
-#contain{
-    margin-top: 20px;
-    width: 100%;
-    height: 100%;
+
+body {
+    background-color: #f4f6f8;
+    padding: 20px;
+}
+
+/* Layout chính */
+#contain {
     display: flex;
     flex-direction: row;
+    gap: 20px;
 }
-#form{
-    padding-left: 20px;
-    padding-right: 20px;
-    width: 15%;
+
+/* Form bên trái */
+#form {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-#list{
-    width: 85%;
+
+#title-input {
+    margin-bottom: 15px;
+    font-size: 20px;
+    text-align: center;
+    color: #333;
 }
-#function-app{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-}
-#list-student{
-    width: 1000px;
-}
-table{
-    width: 100%;
-}
-#col-1{
-    width: 80%;
-}
-#col-2{
-    width: 15%;
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-}
-/*  */
-.input{
+
+/* Các input */
+.input {
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 }
-table td,th{
+
+.input label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444;
+}
+
+.input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+}
+
+.input input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.action {
+    display: flex;
+    justify-content: center;
+}
+
+.action input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.action input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* Danh sách sinh viên bên phải */
+#list {
+    flex: 1;
+}
+
+#function-app {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#col-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#col-2 button {
+    padding: 8px 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    min-width: 80px;
+}
+
+#function-app button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#function-app button:hover {
+    background-color: #0056b3;
+}
+
+/* Bảng sinh viên */
+#list-student {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+table thead {
+    background-color: #007bff;
+    color: white;
+}
+
+table th, table td {
+    padding: 12px 15px;
     text-align: center;
     font-size: 14px;
-    padding: 10px 20px 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive nhỏ hơn */
+@media screen and (max-width: 768px) {
+    #contain {
+        flex-direction: column;
+    }
+
+    #form {
+        width: 100%;
+    }
+
+    #list {
+        width: 100%;
+    }
+
+    #function-app {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    #col-2 {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
